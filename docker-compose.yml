@@ -1,0 +1,27 @@
+version: "3"
+services:
+  php:
+    build: .docker/php
+    container_name: oddsscanner_php
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "9100:9000"
+  mysql:
+    image: mysql:8.0
+    container_name: oddsscanner_mysql
+    volumes:
+      - mysqldata:/var/lib/mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_USER: oddsscanner
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_NAME: mysql
+volumes:
+  mysqldata:
+    driver: local
